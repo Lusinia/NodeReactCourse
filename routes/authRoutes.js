@@ -9,6 +9,16 @@ module.exports = (app) => {
     app.get('/auth/google/callback',
         passport.authenticate('google'));
 
+    app.get('/auth/facebook',
+        passport.authenticate('facebook', {
+            scope: ['email']
+        }));
+
+    app.get('/auth/facebook/callback',
+        passport.authenticate('facebook', { failureRedirect: '/' }), (req, res) => {
+            console.log('logged in facebook');
+        });
+
     app.get('/api/logout', (req, res) => {
         req.logout();
         res.send(req.user);
@@ -16,4 +26,8 @@ module.exports = (app) => {
     app.get('/api/current_user', (req, res) => {
         res.send(req.user);
     });
+    app.get('/', (req, res) => {
+        res.send({hi: 'there'})
+    });
+
 };
