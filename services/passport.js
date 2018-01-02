@@ -17,10 +17,11 @@ passport.deserializeUser((id, done) => {
     })
 });
 // https://console.developers.google.com
-passport.use(new GoogleStrategy({
+passport.use(
+    new GoogleStrategy({
     clientID: keys.googleClientID,
     clientSecret: keys.googleClientSecret,
-    callbackURL: '/auth/google/callback'
+    callbackURL: keys.googleRedirectURI  //   or we can add  proxy: true  to use http everywhere
 }, (accessToken, refreshToken, profile, done) => {
     User.findOne({ googleId: profile.id }).then(existingUser => {
         if (existingUser) {
