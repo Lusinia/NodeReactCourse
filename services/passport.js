@@ -7,13 +7,17 @@ const keys = require('../config/keys');
 const User = mongoose.model('users');
 // passport encode user id from mongo to cookie
 passport.serializeUser((user, done) => {
-    done(null, user.id); // user.id is shortcut of _id from mongo
+    process.nextTick(() => {
+        done(null, user.id); // user.id is shortcut of _id from mongo
+    })
 });
 // passport receive cookies and decode
 // them to id to find current user from mongo
 passport.deserializeUser((id, done) => {
     User.findById(id).then(user => {
-        done(null, user);
+        process.nextTick(() => {
+            done(null, user);
+        })
     })
 });
 // https://console.developers.google.com
